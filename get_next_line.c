@@ -36,7 +36,6 @@ int read_join(int fd, char **buff)
 	bytes_read = read(fd, read_buffer, BUFFER_SIZE);
 	if (bytes_read <= 0)
 	{
-		free(*buff);
 		free(read_buffer);
 		return bytes_read;
 	}
@@ -55,6 +54,8 @@ char *get_next_line(int fd)
 	i = 0;
 	if (!buff)
 		buff = ft_strdup("");
+	if (fd < 0)
+		return (0);
 	while (1)
 	{
 		if (search_index(buff, &i) >= 0)
