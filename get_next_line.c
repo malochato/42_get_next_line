@@ -54,6 +54,8 @@ char *get_next_line(int fd)
 	i = 0;
 	if (!buff)
 		buff = ft_strdup("");
+	if (read(fd, NULL, 0) == -1)
+		return (NULL);
 	while (1)
 	{
 		if (search_index(buff, &i) >= 0)
