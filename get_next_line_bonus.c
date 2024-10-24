@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malde-ch <malo@chato.fr>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 16:10:22 by malde-ch          #+#    #+#             */
-/*   Updated: 2024/10/17 09:47:04 by malde-ch         ###   ########.fr       */
+/*   Updated: 2024/10/17 10:11:22 by malde-ch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*free_join(char **s1, char *s2)
 {
@@ -72,26 +72,26 @@ char	*create_line(char **buff, int i)
 
 char	*get_next_line(int fd)
 {
-	static char	*buff;
+	static char	*buff[1024];
 	int			i;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	i = 0;
-	if (!buff)
-		buff = ft_strdup("");
+	if (!buff[fd])
+		buff[fd] = ft_strdup("");
 	while (1)
 	{
-		if (search_index(buff, &i) >= 0)
+		if (search_index(buff[fd], &i) >= 0)
 			break ;
-		if (read_join(fd, &buff) <= 0)
+		if (read_join(fd, &buff[fd]) <= 0)
 			break ;
 	}
-	if (!buff[0])
+	if (!buff[fd][0])
 	{
-		free(buff);
-		buff = NULL;
+		free(buff[fd]);
+		buff[fd] = NULL;
 		return (NULL);
 	}
-	return (create_line(&buff, i));
+	return (create_line(&buff[fd], i));
 }
